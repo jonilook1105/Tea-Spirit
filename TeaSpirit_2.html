@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tea Spirit | 發現你的茶魂</title>
+    
+    <meta property="og:title" content="我測出了我的茶魂！">
+    <meta property="og:description" content="快來測測看你的專屬茶味與性格 archetype">
+    <meta property="og:image" content="result_1.png"> <meta property="og:type" content="website">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f1ea; /* 柔和的茶色背景 */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: #5d6d4e;
+        }
+
+        .result-image {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .tip {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 15px 0;
+            background-color: #5d6d4e;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #5d6d4e;
+            border: 2px solid #5d6d4e;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>YOUR TEA SPIRIT</h1>
+        
+        <img src="result_1.png" alt="Tea Spirit Result" class="result-image">
+        
+        <p class="tip">💡 提示：長按圖片即可儲存到手機</p>
+
+        <button class="btn" onclick="shareResult()">分享給朋友 (Share)</button>
+        
+        <a href="https://your-project-link.com" class="btn btn-secondary">了解更多關於本計劃</a>
+    </div>
+
+    <script>
+        function shareResult() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Tea Spirit',
+                    text: '我剛在 Tea Sensory Arcade 測出了我的專屬茶魂！',
+                    url: window.location.href,
+                })
+                .catch((error) => console.log('Error sharing', error));
+            } else {
+                alert("請複製網址分享，或截圖分享至 Instagram！");
+            }
+        }
+    </script>
+</body>
+</html>
