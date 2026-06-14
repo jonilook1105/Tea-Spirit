@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tea Spirit Quiz | 測出你的茶魂</title>
+    <meta property="og:title" content="Tea Spirit Quiz — 測出你的專屬茶魂">
+    <meta property="og:description" content="8 道問題，找出屬於你的茶精靈與茶味">
+    <meta property="og:type" content="website">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f1ea;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            padding: 24px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #5d6d4e;
+            margin: 0 0 8px;
+        }
+
+        .category {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #5d6d4e;
+            background: rgba(93, 109, 78, 0.12);
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e4dc;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #5d6d4e;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.55;
+            margin: 0 0 20px;
+            min-height: 3.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #5d6d4e;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            line-height: 1.35;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+            text-align: center;
+        }
+
+        .btn:hover { background-color: #4a5840; }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-option {
+            background-color: #fff;
+            color: #5d6d4e;
+            border: 2px solid #5d6d4e;
+            font-weight: 600;
+        }
+
+        .btn-option:hover {
+            background-color: rgba(93, 109, 78, 0.08);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #5d6d4e;
+            border: 2px solid #5d6d4e;
+        }
+
+        .intro-lead {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 0 0 24px;
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            color: #5d6d4e;
+            margin: 0 0 8px;
+        }
+
+        .result-sub {
+            font-size: 0.9rem;
+            color: #888;
+            margin: 0 0 20px;
+        }
+
+        .result-image {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .tip {
+            font-size: 0.85rem;
+            color: #888;
+            margin: 8px 0 20px;
+        }
+
+        .hidden { display: none !important; }
+
+        .actions { display: flex; flex-direction: column; gap: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Welcome -->
+        <section id="screen-welcome">
+            <p class="brand">YOUR TEA SPIRIT</p>
+            <h1 style="font-size:1.3rem;margin:0 0 12px;">測出你的專屬茶魂</h1>
+            <p class="intro-lead">
+                回答 8 道關於場景、身體、心靈與感官的問題，<br>
+                讓茶精靈為你調配專屬茶味。
+            </p>
+            <button type="button" class="btn" id="btn-start">開始測驗</button>
+        </section>
+
+        <!-- Quiz -->
+        <section id="screen-quiz" class="hidden">
+            <p class="brand">YOUR TEA SPIRIT</p>
+            <span class="category" id="quiz-category"></span>
+            <p class="progress" id="quiz-progress"></p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+            <p class="question-text" id="quiz-question"></p>
+            <div class="options" id="quiz-options"></div>
+        </section>
+
+        <!-- Result -->
+        <section id="screen-result" class="hidden">
+            <p class="brand">YOUR TEA SPIRIT</p>
+            <h2 class="result-title" id="result-name"></h2>
+            <p class="result-sub">這是你的專屬茶精靈</p>
+            <img src="" alt="" class="result-image" id="result-img1">
+            <img src="" alt="" class="result-image" id="result-img2">
+            <p class="tip">💡 提示：長按圖片即可儲存到手機</p>
+            <div class="actions">
+                <button type="button" class="btn" id="btn-share">分享給朋友 (Share)</button>
+                <button type="button" class="btn btn-secondary" id="btn-retry">再測一次</button>
+                <a href="https://t8669.github.io/CKHportfolio/projects/tea-sensory-lab.html" class="btn btn-secondary">了解更多關於本計劃</a>
+            </div>
+        </section>
+    </div>
+
+    <script type="module">
+        import { QUESTIONS, CATEGORY_NAMES, calculateFinalTea } from "./quiz.js";
+
+        const welcome = document.getElementById("screen-welcome");
+        const quizScreen = document.getElementById("screen-quiz");
+        const resultScreen = document.getElementById("screen-result");
+
+        const quizCategory = document.getElementById("quiz-category");
+        const quizProgress = document.getElementById("quiz-progress");
+        const progressFill = document.getElementById("progress-fill");
+        const quizQuestion = document.getElementById("quiz-question");
+        const quizOptions = document.getElementById("quiz-options");
+
+        const resultName = document.getElementById("result-name");
+        const resultImg1 = document.getElementById("result-img1");
+        const resultImg2 = document.getElementById("result-img2");
+
+        let currentIndex = 0;
+        let answers = [];
+        let lastResult = null;
+
+        function showScreen(name) {
+            welcome.classList.toggle("hidden", name !== "welcome");
+            quizScreen.classList.toggle("hidden", name !== "quiz");
+            resultScreen.classList.toggle("hidden", name !== "result");
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[currentIndex];
+            const total = QUESTIONS.length;
+            quizCategory.textContent = CATEGORY_NAMES[q.question_type] || "";
+            quizProgress.textContent = `第 ${currentIndex + 1} / ${total} 題`;
+            progressFill.style.width = `${((currentIndex) / total) * 100}%`;
+            quizQuestion.textContent = q.text;
+
+            quizOptions.innerHTML = "";
+            q.options.forEach((label, idx) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "btn btn-option";
+                btn.textContent = label;
+                btn.addEventListener("click", () => selectAnswer(idx));
+                quizOptions.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(optionIdx) {
+            const q = QUESTIONS[currentIndex];
+            const mapping = q.mapping[optionIdx] || { dim: "", val: "", score: 0 };
+            answers.push({
+                question_id: q.id,
+                answer_idx: optionIdx,
+                dim: mapping.dim,
+                val: mapping.val,
+                score: mapping.score,
+            });
+
+            currentIndex += 1;
+            if (currentIndex >= QUESTIONS.length) {
+                showResult();
+            } else {
+                renderQuestion();
+            }
+        }
+
+        function showResult() {
+            lastResult = calculateFinalTea(answers);
+            resultName.textContent = lastResult.nameZh;
+            resultImg1.src = lastResult.images[0];
+            resultImg1.alt = `${lastResult.nameZh} 茶精靈 1`;
+            resultImg2.src = lastResult.images[1];
+            resultImg2.alt = `${lastResult.nameZh} 茶精靈 2`;
+
+            document.title = `${lastResult.nameZh} | My Tea Spirit`;
+            showScreen("result");
+        }
+
+        function resetQuiz() {
+            currentIndex = 0;
+            answers = [];
+            lastResult = null;
+            document.title = "Tea Spirit Quiz | 測出你的茶魂";
+            showScreen("quiz");
+            renderQuestion();
+        }
+
+        document.getElementById("btn-start").addEventListener("click", resetQuiz);
+
+        document.getElementById("btn-retry").addEventListener("click", () => {
+            showScreen("welcome");
+        });
+
+        document.getElementById("btn-share").addEventListener("click", () => {
+            if (!lastResult) return;
+            const shareUrl = lastResult.shareUrl;
+            if (navigator.share) {
+                navigator.share({
+                    title: "My Tea Spirit",
+                    text: `我測出了我的專屬茶魂：${lastResult.nameZh}！`,
+                    url: shareUrl,
+                }).catch(() => {});
+            } else {
+                navigator.clipboard?.writeText(shareUrl).then(() => {
+                    alert("分享連結已複製！");
+                }).catch(() => {
+                    alert("請複製網址分享：" + shareUrl);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
